@@ -11,6 +11,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Plus } from "lucide-react";
 import { CreateProject } from "@/actions/CreateProject";
+import SubmitProjectButton from "./SubmitProjectButton";
 
 const NewProject = () => {
   return (
@@ -44,7 +45,7 @@ const NewProject = () => {
               placeholder="Project Description (optional)"
             />
           </div>
-          <Button type="submit">Create Project</Button>
+          <SubmitProjectButton />
         </form>
       </DialogContent>
     </Dialog>
