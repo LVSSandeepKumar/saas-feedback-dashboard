@@ -2,8 +2,6 @@ import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,6 +10,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Plus } from "lucide-react";
+import { CreateProject } from "@/actions/CreateProject";
 
 const NewProject = () => {
   return (
@@ -26,28 +25,27 @@ const NewProject = () => {
         <DialogHeader>
           <DialogTitle>Create New Project</DialogTitle>
         </DialogHeader>
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" action={CreateProject}>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Project Name" />
+              <Input name="name" id="name" placeholder="Project Name" />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="url">URL</Label>
-              <Input id="url" placeholder="https://example.com" />
+              <Input name="url" id="url" placeholder="https://example.com" />
             </div>
           </div>
           <div>
             <Label htmlFor="description">Description</Label>
             <Textarea
+              name="description"
               id="description"
               placeholder="Project Description (optional)"
             />
           </div>
+          <Button type="submit">Create Project</Button>
         </form>
-        <DialogFooter>
-          <Button>Create Project</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
