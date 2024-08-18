@@ -15,6 +15,13 @@
       "when": 1723615099507,
       "tag": "20240814055819_goofy_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1723790878554,
+      "tag": "20240816064758_stormy_magik",
+      "breakpoints": true
     }
   ]
 }
