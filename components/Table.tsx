@@ -17,6 +17,7 @@ import {
 import { InferSelectModel } from "drizzle-orm";
 import { feedbacks } from "@/db/schema";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import Ratings from "./Ratings";
 
 type Feedback = InferSelectModel<typeof feedbacks>;
 
@@ -36,6 +37,14 @@ function Table(props: {data: Feedback[]}) {
         id: "userEmail",
         cell: (info) => info.getValue(),
         header: () => <span>Email</span>,
+        footer: (props) => props.column.id,
+      },
+      {
+        accessorFn: (row) => row.rating,
+        id: "rating",
+        cell: (info) => info.getValue() === null ?
+        <span>N/A</span> : <Ratings rating={info.getValue() as number} count={5}/>,
+        header: () => <span>Rating</span>,
         footer: (props) => props.column.id,
       },
       {

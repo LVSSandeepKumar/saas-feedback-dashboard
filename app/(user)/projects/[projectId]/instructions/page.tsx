@@ -22,7 +22,7 @@ const page = ({
       </p>
       <div className="bg-blue-950 p-6 rounded-md mt-6 relative">
         <code className="text-white">
-          {`<my-widget project="${params.projectId}"></my-widget>`}
+          {`<my-widget project-id="${params.projectId}"></my-widget>`}
           <br />
           {`<script src="${process.env.WIDGET_URL}/widget.umd.js"></script>`}
         </code>

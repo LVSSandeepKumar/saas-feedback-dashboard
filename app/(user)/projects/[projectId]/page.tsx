@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { projects as dbProjects } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { ChevronLeft, Globe } from "lucide-react";
+import { ChevronLeft, Code, Globe } from "lucide-react";
 import Link from "next/link";
 import Table from "@/components/Table";
 
@@ -29,9 +29,11 @@ const page = async ({
   return (
     <div>
       <div className="w-fit">
-        <Link href={"/dashboard"}
-        className="flex items-center text-indigo-700 mb-3">
-          <ChevronLeft className="size-5 mr-1"/>
+        <Link
+          href={"/dashboard"}
+          className="flex items-center text-indigo-700 mb-3"
+        >
+          <ChevronLeft className="size-5 mr-1" />
           <span className="text-lg">Back to Projects</span>
         </Link>
       </div>
@@ -42,18 +44,27 @@ const page = async ({
             {project.description}
           </h2>
         </div>
-        {project.url ? (
+        <div className="flex flex-col">
+          {project.url ? (
+            <Link
+              href={project.url}
+              className="underline text-indigo-700 flex items-center"
+            >
+              <Globe className="size-5 mr-1" />
+              <span className="text-lg">Visit Site</span>
+            </Link>
+          ) : null}
           <Link
-            href={project.url}
-            className="underline text-indigo-700 flex items-center"
+            href={`/projects/${params.projectId}/instructions`}
+            className="underline text-indigo-700 flex items-center mt-2"
           >
-            <Globe className="size-5 mr-1" />
-            <span className="text-lg">Visit Site</span>
+            <Code className="size-5 mr-1"/>
+            <span className="text-lg">Embed Code</span>
           </Link>
-        ) : null}
+        </div>
       </div>
       <div>
-        <Table data={project.feedbacks}/>
+        <Table data={project.feedbacks} />
       </div>
     </div>
   );
