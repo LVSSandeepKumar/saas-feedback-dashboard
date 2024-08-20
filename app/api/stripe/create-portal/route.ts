@@ -5,11 +5,12 @@ import { subscriptions } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
-  const { price, quantity = 1 } = await req.json();
   const { userId } = auth();
 
   if (!userId) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
   }
 
   const userSubscription = await db.query.subscriptions.findFirst({
@@ -46,30 +47,31 @@ export async function POST(req: Request) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   if (!customer?.id) {
-    return new Response(JSON.stringify({ error: "Failed to get a customer id" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Failed to get a customer id" }),
+      { status: 500 }
+    );
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      success_url: `${baseUrl}/payments/checkout-success`,
-      customer: customer?.id,
-      payment_method_types: ["card"],
-      mode: "subscription",
-      line_items: [
-        {
-          price,
-          quantity,
-        },
-      ],
+    const url = await stripe.billingPortal.sessions.create({
+      customer: customer.id,
+      return_url: `${baseUrl}/payments`,
     });
 
-    if (session) {
-      return new Response(JSON.stringify({ sessionId: session.id }), { status: 200 });
+    if (url) {
+      return new Response(JSON.stringify({ url }), { status: 200 });
     } else {
-      return new Response(JSON.stringify({ error: "Failed to create a session" }), { status: 500 });
+      return new Response(
+        JSON.stringify({ error: "Failed to create a portal" }),
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: "Failed to create a session" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Failed to create a portal" }),
+      { status: 500 }
+    );
   }
 }

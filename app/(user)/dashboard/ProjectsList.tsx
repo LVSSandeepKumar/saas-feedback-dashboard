@@ -10,16 +10,21 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { planId } from "@/lib/payments";
+import { monthlyPlanId } from "@/lib/payments";
 import SubscribeBtn from "../payments/SubscribeButton";
 import { Lock } from "lucide-react";
+import { getSubscription } from "@/actions/userSubscription";
+import { auth } from "@clerk/nextjs/server";
 
 type Project = InferSelectModel<typeof projects>;
 
 interface PROPS {
   projects: Project[];
 }
-const ProjectsList = (props: PROPS) => {
+const ProjectsList = async (props: PROPS) => {
+  const { userId } = auth();
+  if(!userId) return null;
+  const subscribed = await getSubscription({ userId });
   return (
     <div>
       <ul className="grid grid-cols-1 md:grid-cols-3 p-4 gap-4 m-5">
@@ -38,18 +43,20 @@ const ProjectsList = (props: PROPS) => {
             </Card>
           </li>
         ))}
-        <Card className="max-w-[350px] flex flex-col h-full bg-gray-300">
-          <CardHeader className="flex-1">
-            <CardTitle className="flex text-sm md:text-lg items-center">
-              <Lock className="size-4 md:size-8 mr-2" />
-              <span>Upgrade to premium</span>
-            </CardTitle>
-            <CardDescription className="mt-3">
-              Unlock unlimited projects with one-off payment
-            </CardDescription>
-          </CardHeader>
-          <SubscribeBtn price={planId} />
-        </Card>
+        {subscribed ? null : (
+          <Card className="max-w-[350px] flex flex-col h-full bg-gray-300">
+            <CardHeader className="flex-1">
+              <CardTitle className="flex text-sm md:text-lg items-center">
+                <Lock className="size-4 md:size-8 mr-2" />
+                <span>Upgrade to premium</span>
+              </CardTitle>
+              <CardDescription className="mt-3">
+                Unlock unlimited projects with subscription
+              </CardDescription>
+            </CardHeader>
+            <SubscribeBtn price={monthlyPlanId} />
+          </Card>
+        )}
       </ul>
     </div>
   );
