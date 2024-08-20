@@ -1,5 +1,4 @@
 import { defineConfig } from 'drizzle-kit'
-import { ENV_VARS } from './lib/envVars'
 export default defineConfig({
   schema: "./db/schema.ts",
   dialect: 'postgresql',
